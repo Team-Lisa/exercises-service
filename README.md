@@ -1,7 +1,10 @@
-# Base Python Service
+# Exercises Service
 
 [![.github/workflows/pipeline.yml](https://github.com/Team-Lisa/python-service/actions/workflows/pipeline.yml/badge.svg?branch=master)](https://github.com/Team-Lisa/python-service/actions/workflows/pipeline.yml)
 [![Coverage Status](https://coveralls.io/repos/github/Team-Lisa/exercises-service/badge.svg?branch=first-version)](https://coveralls.io/github/Team-Lisa/exercises-service?branch=first-version)
+
+## Env
+* Production: https://exercises-service-idioma-play.herokuapp.com/
 
 ## Local Mode
 
