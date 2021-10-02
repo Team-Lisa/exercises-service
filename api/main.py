@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 from api.routes import helpers, exercises
-from api.Repositories.db import DataBase
+from api.repositories.db import DataBase
 app = FastAPI()
 DataBase()
 
