@@ -1,4 +1,4 @@
-from api.Repositories.exercise_repository import ExerciseRepository
+from api.repositories.exercise_repository import ExerciseRepository
 from api.models.exercise import Exercise
 from fastapi import HTTPException
 

@@ -1,6 +1,6 @@
 import pytest
-from api.Repositories.exercise_repository import ExerciseRepository
-from api.Repositories.db import DataBase
+from api.repositories.exercise_repository import ExerciseRepository
+from api.repositories.db import DataBase
 
 
 @pytest.fixture
