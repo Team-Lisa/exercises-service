@@ -164,3 +164,90 @@ def test_delete_challenge(init):
 
     result = ChallengeRepository.get_all()
     assert result.count() == 0
+
+
+def test_delete_unit(init):
+    name = "mock_name"
+    name_lesson_1 = "mock_name_lesson_1"
+    exam_1 = "exam_1"
+    lessons_1 = [
+        {"name": "lesson_1",
+         "id": "C1U1L1"}
+    ]
+    unit_id_1 = "U1"
+    unit_id_2 = "U2"
+    units = [
+        {"name": name_lesson_1,
+         "exam": exam_1,
+         "id": unit_id_1,
+         "lessons": lessons_1},
+        {"name": name_lesson_1,
+         "exam": exam_1,
+         "id": unit_id_2,
+         "lessons": lessons_1}
+    ]
+    challenge_id = "D1"
+    challenge = Challenge(name=name, units=units, challenge_id=challenge_id)
+
+    ChallengeRepository.add(challenge)
+
+    result = ChallengeRepository.get_all()
+    assert result.count() == 1
+
+    challenge_saved = result.get()
+
+    assert len(challenge_saved.units) == 2
+
+    ChallengeRepository.delete_unit(challenge_id, unit_id_2)
+
+    result = ChallengeRepository.get_all()
+    challenge_saved = result.get()
+
+    assert len(challenge_saved.units) == 1
+
+
+def test_delete_lesson(init):
+    name = "mock_name"
+    name_lesson_1 = "mock_name_lesson_1"
+    exam_1 = "exam_1"
+    lessons_1 = [
+        {"name": "lesson_1",
+         "id": "C1U1L1"},
+        {"name": "lesson_2",
+         "id": "C1U1L2"}
+    ]
+    unit_id_1 = "U1"
+    units = [
+        {"name": name_lesson_1,
+         "exam": exam_1,
+         "id": unit_id_1,
+         "lessons": lessons_1}
+    ]
+    challenge_id = "D1"
+    challenge = Challenge(name=name, units=units, challenge_id=challenge_id)
+
+    ChallengeRepository.add(challenge)
+
+    result = ChallengeRepository.get_all()
+    assert result.count() == 1
+
+    challenge_saved = result.get()
+    units = challenge_saved.units
+    assert len(units) == 1
+
+    unit = units[0]
+    lessons = unit.get("lessons")
+    assert len(lessons) == 2
+
+    ChallengeRepository.delete_lesson(challenge_id, unit_id_1, "C1U1L1")
+
+    result = ChallengeRepository.get_all()
+    assert result.count() == 1
+
+    challenge_saved = result.get()
+    units = challenge_saved.units
+    assert len(units) == 1
+
+    unit = units[0]
+    lessons = unit.get("lessons")
+    assert len(lessons) == 1

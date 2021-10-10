@@ -10,12 +10,15 @@ router = APIRouter(tags=["Exercises"])
 
 
 @router.post("/exercises", response_model=ExerciseResponse)
-async def create_exercise(exercise: Exercise):
+async def create(exercise: Exercise):
     return ExerciseController.create(exercise)
 
 
 @router.get("/exercises", response_model=ExercisesResponse)
-async def find(lesson_id: Optional[int] = None):
+async def find(lesson_id: Optional[str] = None):
     return ExerciseController.find(lesson_id)
 
 
+@router.delete("/exercises/{exercise_id}")
+async def delete(exercise_id: Optional[str] = None):
+    return ExerciseController.delete(exercise_id)

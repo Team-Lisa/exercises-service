@@ -127,3 +127,115 @@ def test_add_unit(init):
     result = ChallengeController.add_unit(challenge_id, unit)
     assert "message" in result
     assert result.get("message") == "unit created"
+
+
+def test_delete_unit(init):
+    lesson_1 = Lesson(
+        name="lesson_1",
+        id="C1U1L1"
+    )
+    lesson_2 = Lesson(
+        name="lesson_2",
+        id="C1U1L2"
+    )
+
+    lesson_3 = Lesson(
+        name="lesson_1",
+        id="C1U2L1"
+    )
+    lesson_4 = Lesson(
+        name="lesson_2",
+        id="C1U2L2"
+    )
+
+    unit_1 = Unit(
+        name="mock_unit_1",
+        exam="exam",
+        id="U1",
+        lessons=[
+            lesson_1,
+            lesson_2
+        ]
+    )
+
+    unit_2 = Unit(
+        name="mock_unit_2",
+        exam="exam",
+        id="U2",
+        lessons=[
+            lesson_3,
+            lesson_4
+        ]
+    )
+
+    challenge_mock = Challenge(
+        name="mock_name",
+        units=[
+            unit_1,
+            unit_2
+        ],
+        id="D1"
+    )
+
+    ChallengeController.create(challenge_mock)
+
+    challenge_query = ChallengeRepository.get_by_id("D1")
+
+    assert len(challenge_query.get().units) == 2
+
+    result = ChallengeController.delete_unit("D1", "U1")
+
+    assert result == {"message": "unit deleted"}
+
+    challenge_query = ChallengeRepository.get_by_id("D1")
+
+    assert len(challenge_query.get().units) == 1
+
+
+def test_delete_lesson(init):
+    lesson_1 = Lesson(
+        name="lesson_1",
+        id="C1U1L1"
+    )
+    lesson_2 = Lesson(
+        name="lesson_2",
+        id="C1U1L2"
+    )
+
+    unit_1 = Unit(
+        name="mock_unit_1",
+        exam="exam",
+        id="U1",
+        lessons=[
+            lesson_1,
+            lesson_2
+        ]
+    )
+
+    challenge_mock = Challenge(
+        name="mock_name",
+        units=[
+            unit_1
+        ],
+        id="D1"
+    )
+
+    ChallengeController.create(challenge_mock)
+
+    challenge_query = ChallengeRepository.get_by_id("D1")
+    challenge = challenge_query.get()
+    units = challenge.units
+    unit = units[0]
+
+    assert len(unit.get("lessons")) == 2
+
+    result = ChallengeController.delete_lesson("D1", "U1", "C1U1L1")
+
+    assert result == {"message": "lesson deleted"}
+
+    challenge_query = ChallengeRepository.get_by_id("D1")
+    challenge = challenge_query.get()
+    units = challenge.units
+    unit = units[0]
+
+    assert len(unit.get("lessons")) == 1

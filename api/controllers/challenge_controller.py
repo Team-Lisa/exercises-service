@@ -19,15 +19,28 @@ class ChallengeController:
 
     @staticmethod
     def add_unit(challenge_id, unit):
-        ChallengeRepository.add_unit(challenge_id, unit.json())
+        ChallengeRepository.add_unit(challenge_id, unit.dict())
         return {"message": "unit created"}
 
     @staticmethod
     def add_lesson(challenge_id, unit_id, lesson):
-        ChallengeRepository.add_lesson(challenge_id, unit_id, lesson.json())
+        ChallengeRepository.add_lesson(challenge_id, unit_id, lesson.dict())
         return {"message": "lesson created"}
 
     @staticmethod
-    def delete_challenge(challenge_id):
-        ChallengeRepository.delete(challenge_id)
+    def delete_challenge(challenge_id=None):
+        if not challenge_id:
+            ChallengeRepository.delete_all()
+        else:
+            ChallengeRepository.delete(challenge_id)
         return {"message": "challenge deleted"}
+
+    @staticmethod
+    def delete_unit(challenge_id, unit_id):
+        ChallengeRepository.delete_unit(challenge_id, unit_id)
+        return {"message": "unit deleted"}
+
+    @staticmethod
+    def delete_lesson(challenge_id, unit_id, lesson_id):
+        ChallengeRepository.delete_lesson(challenge_id, unit_id, lesson_id)
+        return {"message": "lesson deleted"}

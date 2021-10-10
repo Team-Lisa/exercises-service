@@ -69,3 +69,21 @@ def test_find_by_lesson_id(init):
     result = ExerciseRepository.get(lesson_id)
 
     assert result.count() == 2
+
+
+def test_new_id_0(init):
+    assert ExerciseRepository.get_new_id() == "0"
+
+
+def test_new_id_not_0(init):
+    exercise_type = "listing"
+    question = "mock_question"
+    options = ["option_a", "option_b", "option_c"]
+    correct_answer = "option_b"
+    lesson_id = "l1"
+    exercise = Exercise(exercise_type=exercise_type, question=question,
+                        options=options, correct_answer=correct_answer,
+                        exercise_id=ExerciseRepository.get_new_id(), lesson_id=lesson_id)
+    ExerciseRepository.add(exercise)
+
+    assert ExerciseRepository.get_new_id() == "1"
