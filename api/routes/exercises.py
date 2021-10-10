@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import APIRouter
 from api.models.requests.exercise import Exercise
 from api.controllers.exercise_controller import ExerciseController
@@ -13,7 +15,7 @@ async def create_exercise(exercise: Exercise):
 
 
 @router.get("/exercises", response_model=ExercisesResponse)
-async def find():
-    return ExerciseController.find()
+async def find(lesson_id: Optional[int] = None):
+    return ExerciseController.find(lesson_id)
 
 
