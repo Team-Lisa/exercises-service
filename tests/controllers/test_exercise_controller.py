@@ -1,8 +1,6 @@
-import pytest
-
 from api.controllers.exercise_controller import ExerciseController
 from api.models.requests.exercise import Exercise
-from fastapi import HTTPException
+from api.repositories.exercise_repository import ExerciseRepository
 
 
 def test_response_create(init):
@@ -10,8 +8,10 @@ def test_response_create(init):
     question = "mock_question"
     options = ["option_a", "option_b", "option_c"]
     correct_answer = "option_b"
-
-    exercise = Exercise(exercise_type=exercise_type, question=question, options=options, correct_answer=correct_answer)
+    exercise_id = ExerciseRepository.get_new_id()
+    lesson_id = "l1"
+    exercise = Exercise(exercise_type=exercise_type, question=question, options=options,
+                        correct_answer=correct_answer, exercise_id=exercise_id, lesson_id=lesson_id)
 
     response = ExerciseController.create(exercise)
     assert response == {
@@ -19,7 +19,9 @@ def test_response_create(init):
             "exercise_type": exercise_type,
             "question": question,
             "options": options,
-            "correct_answer": correct_answer
+            "correct_answer": correct_answer,
+            "exercise_id": exercise_id,
+            "lesson_id": lesson_id
         }
     }
 
@@ -35,8 +37,11 @@ def test_find(init):
     question = "mock_question"
     options = ["option_a", "option_b", "option_c"]
     correct_answer = "option_b"
+    exercise_id = ExerciseRepository.get_new_id()
+    lesson_id = "l1"
+    exercise = Exercise(exercise_type=exercise_type, question=question, options=options,
+                        correct_answer=correct_answer, exercise_id=exercise_id, lesson_id=lesson_id)
 
-    exercise = Exercise(exercise_type=exercise_type, question=question, options=options, correct_answer=correct_answer)
     ExerciseController.create(exercise)
 
     result = ExerciseController.find()
@@ -46,9 +51,35 @@ def test_find(init):
                 "exercise_type": exercise_type,
                 "question": question,
                 "options": options,
-                "correct_answer": correct_answer
+                "correct_answer": correct_answer,
+                "exercise_id": exercise_id,
+                "lesson_id": lesson_id
             }
         ]
     }
     exercises = result["exercises"]
     assert len(exercises) == 1
+
+
+def test_delete(init):
+    exercise_type = "listing"
+    question = "mock_question"
+    options = ["option_a", "option_b", "option_c"]
+    correct_answer = "option_b"
+    exercise_id = ExerciseRepository.get_new_id()
+    lesson_id = "l1"
+    exercise = Exercise(exercise_type=exercise_type, question=question, options=options,
+                        correct_answer=correct_answer, exercise_id=exercise_id, lesson_id=lesson_id)
+
+    ExerciseController.create(exercise)
+
+    result = ExerciseController.find()
+    exercises = result["exercises"]
+    assert len(exercises) == 1
+
+    result = ExerciseController.delete(exercise_id)
+    assert result.get("message") == "exercise deleted"
+
+    result = ExerciseController.find()
+    exercises = result["exercises"]
+    assert len(exercises) == 0
