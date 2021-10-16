@@ -1,7 +1,7 @@
 # Exercises Service
 
 [![.github/workflows/pipeline.yml](https://github.com/Team-Lisa/python-service/actions/workflows/pipeline.yml/badge.svg?branch=master)](https://github.com/Team-Lisa/python-service/actions/workflows/pipeline.yml)
-[![Coverage Status](https://coveralls.io/repos/github/Team-Lisa/exercises-service/badge.svg?branch=master)](https://coveralls.io/github/Team-Lisa/exercises-service?branch=first-version)
+[![Coverage Status](https://coveralls.io/repos/github/Team-Lisa/exercises-service/badge.svg?branch=master)](https://coveralls.io/github/Team-Lisa/exercises-service?branch=master)
 
 ## Env
 * Production: https://exercises-service-idioma-play.herokuapp.com/
