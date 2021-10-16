@@ -8,9 +8,14 @@ class Lesson(BaseModel):
     id: str
 
 
+class Exam(BaseModel):
+    id: str
+    duration: int
+
+
 class Unit(BaseModel):
     name: str
-    exam: str
+    exam: Exam
     lessons: List[Lesson]
     id: str
 
@@ -19,3 +24,5 @@ class Challenge(BaseModel):
     name: str
     units: List[Unit]
     id: str
+
+

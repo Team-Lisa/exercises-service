@@ -1,5 +1,5 @@
 from api.controllers.challenge_controller import ChallengeController
-from api.models.requests.challenge import Challenge, Unit, Lesson
+from api.models.requests.challenge import Challenge, Unit, Lesson, Exam
 from api.repositories.challenge_repository import ChallengeRepository
 from api.models.challenge import Challenge as ChallengeModel
 
@@ -23,9 +23,14 @@ def test_response_create(init):
         id="C1U2L2"
     )
 
+    exam_1 = Exam(
+        id="1",
+        duration=3600
+    )
+
     unit_1 = Unit(
         name="mock_unit_1",
-        exam="exam",
+        exam=exam_1,
         id="U1",
         lessons=[
             lesson_1,
@@ -33,9 +38,14 @@ def test_response_create(init):
         ]
     )
 
+    exam_2 = Exam(
+        id="2",
+        duration=3600
+    )
+
     unit_2 = Unit(
         name="mock_unit_2",
-        exam="exam",
+        exam=exam_2,
         id="U2",
         lessons=[
             lesson_3,
@@ -61,7 +71,10 @@ def test_response_create(init):
         'units': [
             {'name': 'mock_unit_1',
              'id': 'U1',
-             'exam': 'exam',
+             'exam': {
+                 "id": "1",
+                 "duration": 3600
+             },
              'lessons': [
                  {'name': 'lesson_1',
                   'id': 'C1U1L1'},
@@ -70,7 +83,10 @@ def test_response_create(init):
              ]},
             {'name': 'mock_unit_2',
              'id': 'U2',
-             'exam': 'exam',
+             'exam': {
+                 "id": "2",
+                 "duration": 3600
+             },
              'lessons': [
                  {'name': 'lesson_1',
                   'id': 'C1U2L1'},
@@ -85,7 +101,10 @@ def test_response_create(init):
 def test_add_unit(init):
     name = "mock_name"
     name_lesson_1 = "mock_name_lesson_1"
-    exam_1 = "exam_1"
+    exam_1 = {
+                 "id": "2",
+                 "duration": 3600
+             }
     lessons_1 = [
         {"name": "lesson_1",
          "id": "C1U1L1"},
@@ -114,10 +133,16 @@ def test_add_unit(init):
         name="lesson_2",
         id="C1U2L2"
     )
+
+    exam = Exam(
+        id="2",
+        duration=3600
+    )
+
     unit = Unit(
         name="mock_unit_2",
         id="U2",
-        exam="exam",
+        exam=exam,
         lessons=[
             lesson_3,
             lesson_4
@@ -148,9 +173,19 @@ def test_delete_unit(init):
         id="C1U2L2"
     )
 
+    exam_1 = Exam(
+        id="1",
+        duration=3600
+    )
+
+    exam_2 = Exam(
+        id="2",
+        duration=3600
+    )
+
     unit_1 = Unit(
         name="mock_unit_1",
-        exam="exam",
+        exam=exam_1,
         id="U1",
         lessons=[
             lesson_1,
@@ -160,7 +195,7 @@ def test_delete_unit(init):
 
     unit_2 = Unit(
         name="mock_unit_2",
-        exam="exam",
+        exam=exam_2,
         id="U2",
         lessons=[
             lesson_3,
@@ -202,9 +237,14 @@ def test_delete_lesson(init):
         id="C1U1L2"
     )
 
+    exam = Exam(
+        id="1",
+        duration=3600
+    )
+
     unit_1 = Unit(
         name="mock_unit_1",
-        exam="exam",
+        exam=exam,
         id="U1",
         lessons=[
             lesson_1,

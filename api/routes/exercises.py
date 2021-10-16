@@ -9,7 +9,7 @@ from api.models.responses.exercises import Exercises as ExercisesResponse
 router = APIRouter(tags=["Exercises"])
 
 
-@router.post("/exercises", response_model=ExerciseResponse)
+@router.post("/exercises", response_model=ExerciseResponse, status_code=201)
 async def create(exercise: Exercise):
     return ExerciseController.create(exercise)
 
