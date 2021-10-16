@@ -83,3 +83,43 @@ def test_delete(init):
     result = ExerciseController.find()
     exercises = result["exercises"]
     assert len(exercises) == 0
+
+
+def test_find_lesson(init):
+    exercise_type = "listing"
+    question = "mock_question"
+    options = ["option_a", "option_b", "option_c"]
+    correct_answer = "option_b"
+    exercise_id = ExerciseRepository.get_new_id()
+    lesson_id = "l1"
+    exercise = Exercise(exercise_type=exercise_type, question=question, options=options,
+                        correct_answer=correct_answer, exercise_id=exercise_id, lesson_id=lesson_id)
+
+    for i in range(ExerciseController.LESSON_EXERCISES_AMOUNT + 3):
+        ExerciseController.create(exercise)
+
+    result = ExerciseController.find_lesson(lesson_id)
+
+    exercises = result.get("exercises")
+
+    assert len(exercises) == ExerciseController.LESSON_EXERCISES_AMOUNT
+
+
+def test_find_exam(init):
+    exercise_type = "listing"
+    question = "mock_question"
+    options = ["option_a", "option_b", "option_c"]
+    correct_answer = "option_b"
+    exercise_id = ExerciseRepository.get_new_id()
+    lesson_id = "l1"
+    exercise = Exercise(exercise_type=exercise_type, question=question, options=options,
+                        correct_answer=correct_answer, exercise_id=exercise_id, lesson_id=lesson_id)
+
+    for i in range(ExerciseController.EXAM_EXERCISES_AMOUNT + 3):
+        ExerciseController.create(exercise)
+
+    result = ExerciseController.find_exam(lesson_id)
+
+    exercises = result.get("exercises")
+
+    assert len(exercises) == ExerciseController.EXAM_EXERCISES_AMOUNT

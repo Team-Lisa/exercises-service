@@ -9,7 +9,7 @@ from api.models.responses.challenges import Challenges as ChallengesResponse
 router = APIRouter(tags=["Challenge"])
 
 
-@router.post("/challenges", response_model=ChallengeResponse)
+@router.post("/challenges", response_model=ChallengeResponse, status_code=201)
 async def create(challenge: Challenge):
     return ChallengeController.create(challenge)
 
@@ -19,12 +19,12 @@ async def find():
     return ChallengeController.find()
 
 
-@router.post("/challenges/{challenge_id}/units")
+@router.post("/challenges/{challenge_id}/units", status_code=201)
 async def add_unit(challenge_id: str, unit: Unit):
     return ChallengeController.add_unit(challenge_id, unit)
 
 
-@router.post("/challenges/{challenge_id}/units/{unit_id}")
+@router.post("/challenges/{challenge_id}/units/{unit_id}", status_code=201)
 async def add_lesson(challenge_id: str, unit_id: str, lesson: Lesson):
     return ChallengeController.add_lesson(challenge_id, unit_id, lesson)
 
