@@ -18,6 +18,13 @@ async def create(exercise: Exercise):
 async def find(lesson_id: Optional[str] = None):
     return ExerciseController.find(lesson_id)
 
+@router.get("/lessons/{lesson_id}/exercises", response_model=ExercisesResponse)
+async def find(lesson_id:str):
+    return ExerciseController.find_lesson(lesson_id)
+
+@router.get("/exams/{exam_id}/exercises", response_model=ExercisesResponse)
+async def find(exam_id: str):
+    return ExerciseController.find_exam(exam_id)
 
 @router.delete("/exercises/{exercise_id}")
 async def delete(exercise_id: Optional[str] = None):
