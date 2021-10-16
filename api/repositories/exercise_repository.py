@@ -29,7 +29,7 @@ class ExerciseRepository:
             return last_id
 
         for exercise in exercises:
-            if last_id < exercise.exercise_id:
+            if int(last_id) < int(exercise.exercise_id):
                 last_id = exercise.exercise_id
         return str(int(last_id)+1)
 

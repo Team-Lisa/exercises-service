@@ -7,4 +7,3 @@ class Exercise(BaseModel):
     question: str
     options: list
     correct_answer: str
-

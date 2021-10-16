@@ -3,7 +3,7 @@ from api.models.exercise import Exercise
 
 
 def test_add_user_successfully(init):
-    exercise_type = "listing"
+    exercise_type = "listening"
     question = "mock_question"
     options = ["option_a", "option_b", "option_c"]
     correct_answer = "option_b"
