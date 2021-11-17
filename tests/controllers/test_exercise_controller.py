@@ -8,8 +8,8 @@ def test_response_create(init):
     question = "mock_question"
     options = ["option_a", "option_b", "option_c"]
     correct_answer = "option_b"
-    exercise_id = ExerciseRepository.get_new_id()
     lesson_id = "l1"
+    exercise_id = ExerciseRepository.get_next_id(lesson_id)
     exercise = Exercise(exercise_type=exercise_type, question=question, options=options,
                         correct_answer=correct_answer, exercise_id=exercise_id, lesson_id=lesson_id)
 
@@ -37,8 +37,8 @@ def test_find(init):
     question = "mock_question"
     options = ["option_a", "option_b", "option_c"]
     correct_answer = "option_b"
-    exercise_id = ExerciseRepository.get_new_id()
     lesson_id = "l1"
+    exercise_id = ExerciseRepository.get_next_id(lesson_id)
     exercise = Exercise(exercise_type=exercise_type, question=question, options=options,
                         correct_answer=correct_answer, exercise_id=exercise_id, lesson_id=lesson_id)
 
@@ -66,8 +66,8 @@ def test_delete(init):
     question = "mock_question"
     options = ["option_a", "option_b", "option_c"]
     correct_answer = "option_b"
-    exercise_id = ExerciseRepository.get_new_id()
     lesson_id = "l1"
+    exercise_id = ExerciseRepository.get_next_id(lesson_id)
     exercise = Exercise(exercise_type=exercise_type, question=question, options=options,
                         correct_answer=correct_answer, exercise_id=exercise_id, lesson_id=lesson_id)
 
@@ -90,8 +90,8 @@ def test_find_lesson(init):
     question = "mock_question"
     options = ["option_a", "option_b", "option_c"]
     correct_answer = "option_b"
-    exercise_id = ExerciseRepository.get_new_id()
     lesson_id = "l1"
+    exercise_id = ExerciseRepository.get_next_id(lesson_id)
     exercise = Exercise(exercise_type=exercise_type, question=question, options=options,
                         correct_answer=correct_answer, exercise_id=exercise_id, lesson_id=lesson_id)
 
@@ -110,8 +110,8 @@ def test_find_exam(init):
     question = "mock_question"
     options = ["option_a", "option_b", "option_c"]
     correct_answer = "option_b"
-    exercise_id = ExerciseRepository.get_new_id()
     lesson_id = "l1"
+    exercise_id = ExerciseRepository.get_next_id(lesson_id)
     exercise = Exercise(exercise_type=exercise_type, question=question, options=options,
                         correct_answer=correct_answer, exercise_id=exercise_id, lesson_id=lesson_id)
 
@@ -123,3 +123,16 @@ def test_find_exam(init):
     exercises = result.get("exercises")
 
     assert len(exercises) == ExerciseController.EXAM_EXERCISES_AMOUNT
+
+def test_get_next_exercise_id(init):
+    exercise_type = "listing"
+    question = "mock_question"
+    options = ["option_a", "option_b", "option_c"]
+    correct_answer = "option_b"
+    lesson_id = "C1U1L1"
+    exercise_id = "C1U1L1E1"
+    exercise = Exercise(exercise_type=exercise_type, question=question, options=options,
+                        correct_answer=correct_answer, exercise_id=exercise_id, lesson_id=lesson_id)
+    ExerciseController.create(exercise)
+    result = ExerciseController.get_next_exercise_id(lesson_id)
+    assert result == {"exercise_next_id": "C1U1L1E2"}

@@ -251,3 +251,31 @@ def test_delete_lesson(init):
     unit = units[0]
     lessons = unit.get("lessons")
     assert len(lessons) == 1
+
+def test_get_next_challenge_id(init):
+    name = "mock_name"
+    name_lesson_1 = "mock_name_lesson_1"
+    exam_1 = "C1U1E"
+    lessons_1 = [
+        {"name": "lesson_1",
+         "id": "C1U1L1"},
+        {"name": "lesson_2",
+         "id": "C1U1L2"}
+    ]
+
+    units = [
+        {"name": name_lesson_1,
+         "exam": exam_1,
+         "lessons": lessons_1},
+
+    ]
+    challenge_id = "C1"
+    challenge = Challenge(name=name, units=units, challenge_id=challenge_id)
+
+    ChallengeRepository.add(challenge)
+
+    result = ChallengeRepository.get_all()
+    assert result.count() == 1
+
+    result = ChallengeRepository.get_next_id()
+    assert result == "C2"
