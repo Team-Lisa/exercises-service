@@ -75,5 +75,7 @@ class ChallengeRepository:
                         result.update(set__units=units)
                         return
 
-
-
+    @staticmethod
+    def get_next_id():
+        challenges = Challenge.objects.filter().values_list('challenge_id')
+        return "C" + str(len(challenges) + 1)
