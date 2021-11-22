@@ -27,5 +27,9 @@ class ExerciseRepository:
 
     @staticmethod
     def get_next_id(lesson_id):
-        exercises = Exercise.objects.filter(lesson_id=lesson_id).values_list('exercise_id')
-        return lesson_id + "E" + str(len(exercises) + 1)
+        exercises = Exercise.objects.filter(lesson_id=lesson_id).order_by('-exercise_id')
+        if len(exercises) == 0:
+            return lesson_id + "E" + str(1)
+        else:
+            next_id = int(exercises[0].exercise_id.split('E')[1]) + 1
+            return lesson_id + "E" + str(next_id)
