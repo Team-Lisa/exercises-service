@@ -7,13 +7,13 @@ class ChallengeController:
     @staticmethod
     def create(challenge):
         units = list(map(lambda unit: unit.dict(), challenge.units))
-        challenge_to_save = Challenge(name=challenge.name, units=units, challenge_id=challenge.id)
+        challenge_to_save = Challenge(name=challenge.name, units=units, challenge_id=challenge.id, published=challenge.published)
         result = ChallengeRepository.add(challenge_to_save)
         return {"challenge": result.to_json()}
 
     @staticmethod
-    def find():
-        result = ChallengeRepository.get_all()
+    def find(published):
+        result = ChallengeRepository.get_all(published)
         result = map(lambda challenge: challenge.to_json(), list(result))
         return {"challenges": list(result)}
 

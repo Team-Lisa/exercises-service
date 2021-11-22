@@ -15,8 +15,8 @@ async def create(challenge: Challenge):
 
 
 @router.get("/challenges", response_model=ChallengesResponse)
-async def find():
-    return ChallengeController.find()
+async def find(published: str = None):
+    return ChallengeController.find(published)
 
 @router.get("/challenges/next")
 async def get_next_challenge_id():
