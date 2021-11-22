@@ -341,11 +341,11 @@ def test_filter_by_published(init):
     ChallengeController.create(challenge_mock_2)
     ChallengeController.create(challenge_mock_3)
 
-    published = ChallengeRepository.get_all(published=True)
+    published = ChallengeRepository.get_all(published="true")
 
     assert len(published) == 1
 
-    published = ChallengeRepository.get_all(published=False)
+    published = ChallengeRepository.get_all(published="false")
 
     assert len(published) == 2
 
