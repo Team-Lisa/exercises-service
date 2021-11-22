@@ -7,13 +7,13 @@ class ChallengeController:
     @staticmethod
     def create(challenge):
         units = list(map(lambda unit: unit.dict(), challenge.units))
-        challenge_to_save = Challenge(name=challenge.name, units=units, challenge_id=challenge.id)
+        challenge_to_save = Challenge(name=challenge.name, units=units, challenge_id=challenge.id, published=challenge.published)
         result = ChallengeRepository.add(challenge_to_save)
         return {"challenge": result.to_json()}
 
     @staticmethod
-    def find():
-        result = ChallengeRepository.get_all()
+    def find(published):
+        result = ChallengeRepository.get_all(published)
         result = map(lambda challenge: challenge.to_json(), list(result))
         return {"challenges": list(result)}
 
@@ -44,3 +44,15 @@ class ChallengeController:
     def delete_lesson(challenge_id, unit_id, lesson_id):
         ChallengeRepository.delete_lesson(challenge_id, unit_id, lesson_id)
         return {"message": "lesson deleted"}
+
+    @staticmethod
+    def get_next_challenge_id():
+        # Ids:
+        #   - "C1" is for Challenge 1
+        #   - "C1U1" is for Challenge 1, Unit 1
+        #   - "C1U1L1" is for Challenge 1, Unit1, Lesson 1
+        #   - "C1U1L1E1" is for Challenge 1, Unit 1, Lesson 1, Exercise 1
+        #   - "C1U1E" is for Challenge 1, Unit 1, Exam
+        #   - "C1U1EE1" is for Challenge 1, Unit 1, Exam, Exercise 1
+        result = ChallengeRepository.get_next_id()
+        return {"challenges_next_id": result}

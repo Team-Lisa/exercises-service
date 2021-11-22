@@ -12,8 +12,11 @@ class ChallengeRepository:
         Challenge.objects().delete()
 
     @staticmethod
-    def get_all():
-        return Challenge.objects()
+    def get_all(published=None):
+        if published is None:
+            return Challenge.objects()
+        else:
+            return Challenge.objects(published=published == 'true')
 
     @staticmethod
     def add_unit(challenge_id, unit):
@@ -75,5 +78,11 @@ class ChallengeRepository:
                         result.update(set__units=units)
                         return
 
-
-
+    @staticmethod
+    def get_next_id():
+        challenges = Challenge.objects.filter().order_by('-challenge_id')
+        if len(challenges) == 0:
+            return "C" + str(1)
+        else:
+            next_id = int(challenges[0].challenge_id.split('C')[1]) + 1
+            return "C" + str(next_id)

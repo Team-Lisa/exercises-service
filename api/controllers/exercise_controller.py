@@ -10,7 +10,7 @@ class ExerciseController:
     def create(exercise):
         exercise_to_save = Exercise(exercise_type=exercise.exercise_type, question=exercise.question,
                                     options=exercise.options, correct_answer=exercise.correct_answer,
-                                    lesson_id=exercise.lesson_id, exercise_id=ExerciseRepository.get_new_id())
+                                    lesson_id=exercise.lesson_id, exercise_id=ExerciseRepository.get_next_id(exercise.lesson_id))
         result = ExerciseRepository.add(exercise_to_save)
         return {"exercise": result.to_json()}
 
@@ -29,8 +29,8 @@ class ExerciseController:
         return ExerciseController.find_exercises(lesson_id, ExerciseController.LESSON_EXERCISES_AMOUNT)
 
     @staticmethod
-    def find_exercises(exercise_id, amount_exercises):
-        result = ExerciseController.find(exercise_id)
+    def find_exercises(lesson_id, amount_exercises):
+        result = ExerciseController.find(lesson_id)
         exercises = result.get("exercises")
         if len(exercises) < amount_exercises:
             return {"exercises": exercises}
@@ -51,3 +51,15 @@ class ExerciseController:
         else:
             ExerciseRepository.delete(exercise_id)
         return {"message": "exercise deleted"}
+
+    @staticmethod
+    def get_next_exercise_id(lesson_id):
+        # Ids:
+        #   - "C1" is for Challenge 1
+        #   - "C1U1" is for Challenge 1, Unit 1
+        #   - "C1U1L1" is for Challenge 1, Unit1, Lesson 1
+        #   - "C1U1L1E1" is for Challenge 1, Unit 1, Lesson 1, Exercise 1
+        #   - "C1U1E" is for Challenge 1, Unit 1, Exam
+        #   - "C1U1EE1" is for Challenge 1, Unit 1, Exam, Exercise 1
+        result = ExerciseRepository.get_next_id(lesson_id)
+        return {"exercise_next_id": result}

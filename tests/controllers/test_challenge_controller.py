@@ -59,7 +59,8 @@ def test_response_create(init):
             unit_1,
             unit_2
         ],
-        id="D1"
+        id="D1",
+        published=False
     )
 
     result = ChallengeController.create(challenge_mock)
@@ -68,6 +69,7 @@ def test_response_create(init):
     assert result.get("challenge") == {
         'name': 'mock_name',
         'challenge_id': 'D1',
+        'published': False,
         'units': [
             {'name': 'mock_unit_1',
              'id': 'U1',
@@ -121,7 +123,7 @@ def test_add_unit(init):
     ]
 
     challenge_id = "D1"
-    challenge = ChallengeModel(name=name, units=units, challenge_id=challenge_id)
+    challenge = ChallengeModel(name=name, units=units, challenge_id=challenge_id, published=True)
 
     ChallengeRepository.add(challenge)
 
@@ -209,7 +211,8 @@ def test_delete_unit(init):
             unit_1,
             unit_2
         ],
-        id="D1"
+        id="D1",
+        published=False
     )
 
     ChallengeController.create(challenge_mock)
@@ -257,7 +260,8 @@ def test_delete_lesson(init):
         units=[
             unit_1
         ],
-        id="D1"
+        id="D1",
+        published=True
     )
 
     ChallengeController.create(challenge_mock)
@@ -403,4 +407,145 @@ def test_edit_challenge(init):
         ]
     }
 
+    challenge_mock_1 = Challenge(
+        name="mock_name",
+        units=[
+            unit_1
+        ],
+        id="D1",
+        published=True
+    )
+
+    challenge_mock_2 = Challenge(
+        name="mock_name",
+        units=[
+            unit_1
+        ],
+        id="D2",
+        published=False
+    )
+
+    challenge_mock_3 = Challenge(
+        name="mock_name",
+        units=[
+            unit_1
+        ],
+        id="D3",
+        published=False
+    )
+
+    ChallengeController.create(challenge_mock_1)
+    ChallengeController.create(challenge_mock_2)
+    ChallengeController.create(challenge_mock_3)
+
+    published = ChallengeRepository.get_all(published="true")
+
+    assert len(published) == 1
+
+    published = ChallengeRepository.get_all(published="false")
+
+    assert len(published) == 2
+
+    published = ChallengeRepository.get_all()
+
+    assert len(published) == 3
+
+def test_get_next_challenge_id(init):
+    name = "mock_name"
+    name_lesson_1 = "mock_name_lesson_1"
+    exam_1 = {
+                 "id": "C1U1E",
+                 "duration": 3600
+             }
+    lessons_1 = [
+        {"name": "lesson_1",
+         "id": "C1U1L1"},
+        {"name": "lesson_2",
+         "id": "C1U1L2"}
+    ]
+
+    units = [
+        {"name": name_lesson_1,
+         "id": "C1U1",
+         "exam": exam_1,
+         "lessons": lessons_1},
+
+    ]
+
+    challenge_id = "C1"
+    challenge = ChallengeModel(name=name, units=units, challenge_id=challenge_id, published=True)
+
+    ChallengeRepository.add(challenge)
+
+    result = ChallengeController.get_next_challenge_id()
+
+    assert result == {"challenges_next_id": "C2"}
+
+def test_filter_by_published(init):
+    lesson_1 = Lesson(
+        name="lesson_1",
+        id="C1U1L1"
+    )
+    lesson_2 = Lesson(
+        name="lesson_2",
+        id="C1U1L2"
+    )
+
+    exam = Exam(
+        id="1",
+        duration=3600
+    )
+
+    unit_1 = Unit(
+        name="mock_unit_1",
+        exam=exam,
+        id="U1",
+        lessons=[
+            lesson_1,
+            lesson_2
+        ]
+    )
+
+    challenge_mock_1 = Challenge(
+        name="mock_name",
+        units=[
+            unit_1
+        ],
+        id="D1",
+        published=True
+    )
+
+    challenge_mock_2 = Challenge(
+        name="mock_name",
+        units=[
+            unit_1
+        ],
+        id="D2",
+        published=False
+    )
+
+    challenge_mock_3 = Challenge(
+        name="mock_name",
+        units=[
+            unit_1
+        ],
+        id="D3",
+        published=False
+    )
+
+    ChallengeController.create(challenge_mock_1)
+    ChallengeController.create(challenge_mock_2)
+    ChallengeController.create(challenge_mock_3)
+
+    published = ChallengeRepository.get_all(published="true")
+
+    assert len(published) == 1
+
+    published = ChallengeRepository.get_all(published="false")
+
+    assert len(published) == 2
+
+    published = ChallengeRepository.get_all()
+
+    assert len(published) == 3
 

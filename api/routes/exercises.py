@@ -13,6 +13,9 @@ router = APIRouter(tags=["Exercises"])
 async def create(exercise: Exercise):
     return ExerciseController.create(exercise)
 
+@router.get("/lessons/{lesson_id}/exercises/next")
+async def get_next_exercise_id(lesson_id:str):
+    return ExerciseController.get_next_exercise_id(lesson_id)
 
 @router.get("/exercises", response_model=ExercisesResponse)
 async def find(lesson_id: Optional[str] = None):
