@@ -63,7 +63,8 @@ def test_challenge_response():
          "id": "1"}
     ]
     challenge_id = "D1"
-    challenge = Challenge(name=name, units=units, challenge_id=challenge_id)
+    published = False
+    challenge = Challenge(name=name, units=units, challenge_id=challenge_id, published=published)
 
     response = ChallengeResponse(
         challenge=challenge.to_json()
@@ -93,7 +94,8 @@ def test_challenges_response():
          "id": "1"}
     ]
     challenge_id = "D1"
-    challenge = Challenge(name=name, units=units, challenge_id=challenge_id)
+    published = True
+    challenge = Challenge(name=name, units=units, challenge_id=challenge_id, published=published)
 
     response = ChallengesResponse(
         challenges=[challenge.to_json()]
