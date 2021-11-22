@@ -77,5 +77,9 @@ class ChallengeRepository:
 
     @staticmethod
     def get_next_id():
-        challenges = Challenge.objects.filter().values_list('challenge_id')
-        return "C" + str(len(challenges) + 1)
+        challenges = Challenge.objects.filter().order_by('-challenge_id')
+        if len(challenges) == 0:
+            return "C" + str(1)
+        else:
+            next_id = int(challenges[0].challenge_id.split('C')[1]) + 1
+            return "C" + str(next_id)
