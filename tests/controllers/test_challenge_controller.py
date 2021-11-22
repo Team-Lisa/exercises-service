@@ -339,6 +339,7 @@ def test_edit_challenge(init):
             unit_1,
             unit_2
         ],
+        published=True,
         id="D1"
     )
 
@@ -348,6 +349,7 @@ def test_edit_challenge(init):
     assert result.get("challenge") == {
         'name': 'mock_name',
         'challenge_id': 'D1',
+        'published': True,
         'units': [
             {'name': 'mock_unit_1',
              'id': 'U1',
@@ -379,9 +381,8 @@ def test_edit_challenge(init):
 
     challenge_mock_updated = Challenge(
         name="mock_name2",
-        units=[
-            unit_2
-        ],
+        units=[unit_2],
+        published=False,
         id="D1"
     )
 
@@ -390,6 +391,7 @@ def test_edit_challenge(init):
     assert result.get("challenge") == {
         'name': 'mock_name2',
         'challenge_id': 'D1',
+        'published': False,
         'units': [
             {'name': 'mock_unit_2',
              'id': 'U2',
@@ -406,49 +408,6 @@ def test_edit_challenge(init):
              }
         ]
     }
-
-    challenge_mock_1 = Challenge(
-        name="mock_name",
-        units=[
-            unit_1
-        ],
-        id="D1",
-        published=True
-    )
-
-    challenge_mock_2 = Challenge(
-        name="mock_name",
-        units=[
-            unit_1
-        ],
-        id="D2",
-        published=False
-    )
-
-    challenge_mock_3 = Challenge(
-        name="mock_name",
-        units=[
-            unit_1
-        ],
-        id="D3",
-        published=False
-    )
-
-    ChallengeController.create(challenge_mock_1)
-    ChallengeController.create(challenge_mock_2)
-    ChallengeController.create(challenge_mock_3)
-
-    published = ChallengeRepository.get_all(published="true")
-
-    assert len(published) == 1
-
-    published = ChallengeRepository.get_all(published="false")
-
-    assert len(published) == 2
-
-    published = ChallengeRepository.get_all()
-
-    assert len(published) == 3
 
 def test_get_next_challenge_id(init):
     name = "mock_name"

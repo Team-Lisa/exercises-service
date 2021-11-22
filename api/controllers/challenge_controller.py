@@ -28,6 +28,13 @@ class ChallengeController:
         return {"message": "lesson created"}
 
     @staticmethod
+    def edit_challenge(challenge_id, challenge):
+        challenge_updated =  ChallengeRepository.edit_challenge(challenge_id, challenge)
+        if challenge_updated == None:
+            return {"challenge": {}}
+        return {"challenge": challenge_updated.to_json()}
+
+    @staticmethod
     def delete_challenge(challenge_id=None):
         if not challenge_id:
             ChallengeRepository.delete_all()

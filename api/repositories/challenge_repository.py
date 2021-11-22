@@ -46,6 +46,20 @@ class ChallengeRepository:
         return result
 
     @staticmethod
+    def edit_challenge(challenge_id, new_challenge):
+        challenge = Challenge.objects(challenge_id=challenge_id)
+        if len(challenge) == 0:
+            return
+        else:
+            challenge = challenge.get()
+            new_units = list(map(lambda unit: unit.dict(), new_challenge.units))
+            challenge.units = new_units
+            challenge.name = new_challenge.name
+            challenge.published = new_challenge.published
+            challenge.save()
+            return challenge
+
+    @staticmethod
     def delete(challenge_id):
         Challenge.objects(challenge_id=challenge_id).delete()
 

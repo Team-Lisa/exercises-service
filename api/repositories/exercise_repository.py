@@ -35,8 +35,11 @@ class ExerciseRepository:
 
     @staticmethod
     def edit_exercise(exercise_id, new_exercise):
-        try:
-            exercise = Exercise.objects(exercise_id=exercise_id).get()
+        exercise = Exercise.objects(exercise_id=exercise_id)
+        if len(exercise) == 0:
+            return
+        else:
+            exercise = exercise.get()
             exercise.lesson_id = new_exercise.lesson_id
             exercise.exercise_type = new_exercise.exercise_type
             exercise.question = new_exercise.question
@@ -44,8 +47,6 @@ class ExerciseRepository:
             exercise.correct_answer = new_exercise.correct_answer
             exercise.save()
             return exercise
-        except Exception:
-            return
 
     @staticmethod
     def delete(exercise_id):
