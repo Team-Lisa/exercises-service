@@ -123,3 +123,70 @@ def test_find_exam(init):
     exercises = result.get("exercises")
 
     assert len(exercises) == ExerciseController.EXAM_EXERCISES_AMOUNT
+
+def test_edit_exercise(init):
+    exercise_type = "listing"
+    question = "mock_question"
+    options = ["option_a", "option_b", "option_c"]
+    correct_answer = "option_b"
+    exercise_id = ExerciseRepository.get_new_id()
+    lesson_id = "l1"
+    exercise = Exercise(exercise_type=exercise_type, question=question, options=options,
+                        correct_answer=correct_answer, exercise_id=exercise_id, lesson_id=lesson_id)
+
+    response = ExerciseController.create(exercise)
+    assert response == {
+        "exercise": {
+            "exercise_type": exercise_type,
+            "question": question,
+            "options": options,
+            "correct_answer": correct_answer,
+            "exercise_id": exercise_id,
+            "lesson_id": lesson_id
+        }
+    }
+
+    new_exercise = Exercise(exercise_type="pruebita", question="question edit", options=options,
+                        correct_answer=correct_answer, exercise_id=exercise_id, lesson_id=lesson_id)
+
+    response = ExerciseController.edit_exercise(exercise_id, new_exercise)
+    assert response == {
+        "exercise": {
+            "exercise_type": "pruebita",
+            "question": "question edit",
+            "options": options,
+            "correct_answer": correct_answer,
+            "exercise_id": exercise_id,
+            "lesson_id": lesson_id
+        }
+    }
+
+def test_edit_exercise_without_id(init):
+    exercise_type = "listing"
+    question = "mock_question"
+    options = ["option_a", "option_b", "option_c"]
+    correct_answer = "option_b"
+    exercise_id = ExerciseRepository.get_new_id()
+    lesson_id = "l1"
+    exercise = Exercise(exercise_type=exercise_type, question=question, options=options,
+                        correct_answer=correct_answer, exercise_id=exercise_id, lesson_id=lesson_id)
+
+    response = ExerciseController.create(exercise)
+    assert response == {
+        "exercise": {
+            "exercise_type": exercise_type,
+            "question": question,
+            "options": options,
+            "correct_answer": correct_answer,
+            "exercise_id": exercise_id,
+            "lesson_id": lesson_id
+        }
+    }
+
+    new_exercise = Exercise(exercise_type="pruebita", question="question edit", options=options,
+                        correct_answer=correct_answer, exercise_id=exercise_id, lesson_id=lesson_id)
+
+    response = ExerciseController.edit_exercise(None, new_exercise)
+    assert response == {
+        "exercise": {}
+    }

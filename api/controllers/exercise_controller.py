@@ -37,6 +37,14 @@ class ExerciseController:
         return {"exercises": exercises[:amount_exercises]}
 
     @staticmethod
+    def edit_exercise(exercise_id, exercise):
+        exercise_updated = ExerciseRepository.edit_exercise(exercise_id, exercise)
+        if exercise_updated == None:
+            return {"exercise": {}}
+        return {"exercise": exercise_updated.to_json()}
+
+
+    @staticmethod
     def delete(exercise_id=None):
         if not exercise_id:
             ExerciseRepository.delete_all()
