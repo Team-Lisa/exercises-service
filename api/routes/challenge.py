@@ -18,6 +18,9 @@ async def create(challenge: Challenge):
 async def find(published: str = None):
     return ChallengeController.find(published)
 
+@router.get("/challenges/next")
+async def get_next_challenge_id():
+    return ChallengeController.get_next_challenge_id()
 
 @router.post("/challenges/{challenge_id}/units", status_code=201)
 async def add_unit(challenge_id: str, unit: Unit):

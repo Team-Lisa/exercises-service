@@ -44,3 +44,15 @@ class ChallengeController:
     def delete_lesson(challenge_id, unit_id, lesson_id):
         ChallengeRepository.delete_lesson(challenge_id, unit_id, lesson_id)
         return {"message": "lesson deleted"}
+
+    @staticmethod
+    def get_next_challenge_id():
+        # Ids:
+        #   - "C1" is for Challenge 1
+        #   - "C1U1" is for Challenge 1, Unit 1
+        #   - "C1U1L1" is for Challenge 1, Unit1, Lesson 1
+        #   - "C1U1L1E1" is for Challenge 1, Unit 1, Lesson 1, Exercise 1
+        #   - "C1U1E" is for Challenge 1, Unit 1, Exam
+        #   - "C1U1EE1" is for Challenge 1, Unit 1, Exam, Exercise 1
+        result = ChallengeRepository.get_next_id()
+        return {"challenges_next_id": result}

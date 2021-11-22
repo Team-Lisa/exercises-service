@@ -284,7 +284,7 @@ def test_delete_lesson(init):
 
     assert len(unit.get("lessons")) == 1
 
-
+    
 def test_filter_by_published(init):
     lesson_1 = Lesson(
         name="lesson_1",
@@ -352,3 +352,35 @@ def test_filter_by_published(init):
     published = ChallengeRepository.get_all()
 
     assert len(published) == 3
+
+def test_get_next_challenge_id(init):
+    name = "mock_name"
+    name_lesson_1 = "mock_name_lesson_1"
+    exam_1 = {
+                 "id": "C1U1E",
+                 "duration": 3600
+             }
+    lessons_1 = [
+        {"name": "lesson_1",
+         "id": "C1U1L1"},
+        {"name": "lesson_2",
+         "id": "C1U1L2"}
+    ]
+
+    units = [
+        {"name": name_lesson_1,
+         "id": "C1U1",
+         "exam": exam_1,
+         "lessons": lessons_1},
+
+    ]
+
+    challenge_id = "C1"
+    challenge = ChallengeModel(name=name, units=units, challenge_id=challenge_id, published=True)
+
+    ChallengeRepository.add(challenge)
+
+    result = ChallengeController.get_next_challenge_id()
+
+    assert result == {"challenges_next_id": "C2"}
+

@@ -22,17 +22,14 @@ class ExerciseRepository:
         return Exercise.objects(lesson_id=lesson_id)
 
     @staticmethod
-    def get_new_id():
-        last_id = "0"
-        exercises = ExerciseRepository.get_all()
-        if len(exercises) == 0:
-            return last_id
-
-        for exercise in exercises:
-            if int(last_id) < int(exercise.exercise_id):
-                last_id = exercise.exercise_id
-        return str(int(last_id)+1)
-
-    @staticmethod
     def delete(exercise_id):
         Exercise.objects(exercise_id=exercise_id).delete()
+
+    @staticmethod
+    def get_next_id(lesson_id):
+        exercises = Exercise.objects.filter(lesson_id=lesson_id).order_by('-exercise_id')
+        if len(exercises) == 0:
+            return lesson_id + "E" + str(1)
+        else:
+            next_id = int(exercises[0].exercise_id.split('E')[1]) + 1
+            return lesson_id + "E" + str(next_id)
