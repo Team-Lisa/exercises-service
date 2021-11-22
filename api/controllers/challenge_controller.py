@@ -12,8 +12,8 @@ class ChallengeController:
         return {"challenge": result.to_json()}
 
     @staticmethod
-    def find():
-        result = ChallengeRepository.get_all()
+    def find(published):
+        result = ChallengeRepository.get_all(published)
         result = map(lambda challenge: challenge.to_json(), list(result))
         return {"challenges": list(result)}
 

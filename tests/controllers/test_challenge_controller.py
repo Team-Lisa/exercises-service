@@ -283,3 +283,72 @@ def test_delete_lesson(init):
     unit = units[0]
 
     assert len(unit.get("lessons")) == 1
+
+
+def test_filter_by_published(init):
+    lesson_1 = Lesson(
+        name="lesson_1",
+        id="C1U1L1"
+    )
+    lesson_2 = Lesson(
+        name="lesson_2",
+        id="C1U1L2"
+    )
+
+    exam = Exam(
+        id="1",
+        duration=3600
+    )
+
+    unit_1 = Unit(
+        name="mock_unit_1",
+        exam=exam,
+        id="U1",
+        lessons=[
+            lesson_1,
+            lesson_2
+        ]
+    )
+
+    challenge_mock_1 = Challenge(
+        name="mock_name",
+        units=[
+            unit_1
+        ],
+        id="D1",
+        published=True
+    )
+
+    challenge_mock_2 = Challenge(
+        name="mock_name",
+        units=[
+            unit_1
+        ],
+        id="D2",
+        published=False
+    )
+
+    challenge_mock_3 = Challenge(
+        name="mock_name",
+        units=[
+            unit_1
+        ],
+        id="D3",
+        published=False
+    )
+
+    ChallengeController.create(challenge_mock_1)
+    ChallengeController.create(challenge_mock_2)
+    ChallengeController.create(challenge_mock_3)
+
+    published = ChallengeRepository.get_all(published=True)
+
+    assert len(published) == 1
+
+    published = ChallengeRepository.get_all(published=False)
+
+    assert len(published) == 2
+
+    published = ChallengeRepository.get_all()
+
+    assert len(published) == 3

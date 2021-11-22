@@ -12,8 +12,11 @@ class ChallengeRepository:
         Challenge.objects().delete()
 
     @staticmethod
-    def get_all():
-        return Challenge.objects()
+    def get_all(published=None):
+        if published is None:
+            return Challenge.objects()
+        else:
+            return Challenge.objects(published=published)
 
     @staticmethod
     def add_unit(challenge_id, unit):

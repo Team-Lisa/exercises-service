@@ -15,8 +15,8 @@ async def create(challenge: Challenge):
 
 
 @router.get("/challenges", response_model=ChallengesResponse)
-async def find():
-    return ChallengeController.find()
+async def find(published: str = None):
+    return ChallengeController.find(published)
 
 
 @router.post("/challenges/{challenge_id}/units", status_code=201)
