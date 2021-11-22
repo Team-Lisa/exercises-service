@@ -7,8 +7,8 @@ def test_add_user_successfully(init):
     question = "mock_question"
     options = ["option_a", "option_b", "option_c"]
     correct_answer = "option_b"
-    exercise_id = "e1"
-    lesson_id = "l1"
+    exercise_id = "C1U1L1E1"
+    lesson_id = "C1U1L1"
     exercise = Exercise(exercise_type=exercise_type, question=question,
                         options=options, correct_answer=correct_answer,
                         exercise_id=exercise_id, lesson_id=lesson_id)
@@ -33,8 +33,8 @@ def test_find_by_lesson_id(init):
     question = "mock_question"
     options = ["option_a", "option_b", "option_c"]
     correct_answer = "option_b"
-    exercise_id = "e1"
-    lesson_id = "l1"
+    exercise_id = "C1U1L1E1"
+    lesson_id = "C1U1L1"
     exercise = Exercise(exercise_type=exercise_type, question=question,
                         options=options, correct_answer=correct_answer,
                         exercise_id=exercise_id, lesson_id=lesson_id)
@@ -44,8 +44,8 @@ def test_find_by_lesson_id(init):
     question = "mock_question_1"
     options = ["option_a", "option_b", "option_c"]
     correct_answer = "option_c"
-    exercise_id = "e2"
-    lesson_id = "l1"
+    exercise_id = "C1U1L1E2"
+    lesson_id = "C1U1L1"
     exercise = Exercise(exercise_type=exercise_type, question=question,
                         options=options, correct_answer=correct_answer,
                         exercise_id=exercise_id, lesson_id=lesson_id)
@@ -55,8 +55,8 @@ def test_find_by_lesson_id(init):
     question = "mock_question_1"
     options = ["option_a", "option_b", "option_c"]
     correct_answer = "option_c"
-    exercise_id = "e2"
-    lesson_id_2 = "l2"
+    exercise_id = "C1U1L2E2"
+    lesson_id_2 = "C1U1L2"
     exercise = Exercise(exercise_type=exercise_type, question=question,
                         options=options, correct_answer=correct_answer,
                         exercise_id=exercise_id, lesson_id=lesson_id_2)
@@ -71,19 +71,18 @@ def test_find_by_lesson_id(init):
     assert result.count() == 2
 
 
-def test_new_id_0(init):
-    assert ExerciseRepository.get_new_id() == "0"
+def test_new_id(init):
+    assert ExerciseRepository.get_next_id("C1U1L1") == "C1U1L1E1"
 
-
-def test_new_id_not_0(init):
+def test_get_next_exercise_id(init):
     exercise_type = "listing"
     question = "mock_question"
     options = ["option_a", "option_b", "option_c"]
     correct_answer = "option_b"
-    lesson_id = "l1"
+    lesson_id = "C1U1L1"
     exercise = Exercise(exercise_type=exercise_type, question=question,
                         options=options, correct_answer=correct_answer,
-                        exercise_id=ExerciseRepository.get_new_id(), lesson_id=lesson_id)
+                        exercise_id=ExerciseRepository.get_next_id(lesson_id), lesson_id=lesson_id)
     ExerciseRepository.add(exercise)
 
-    assert ExerciseRepository.get_new_id() == "1"
+    assert ExerciseRepository.get_next_id(lesson_id) == "C1U1L1E2"
