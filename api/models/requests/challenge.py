@@ -24,5 +24,6 @@ class Challenge(BaseModel):
     name: str
     units: List[Unit]
     id: str
+    published: bool
 
 

@@ -59,7 +59,8 @@ def test_response_create(init):
             unit_1,
             unit_2
         ],
-        id="D1"
+        id="D1",
+        published=False
     )
 
     result = ChallengeController.create(challenge_mock)
@@ -68,6 +69,7 @@ def test_response_create(init):
     assert result.get("challenge") == {
         'name': 'mock_name',
         'challenge_id': 'D1',
+        'published': False,
         'units': [
             {'name': 'mock_unit_1',
              'id': 'U1',
@@ -121,7 +123,7 @@ def test_add_unit(init):
     ]
 
     challenge_id = "D1"
-    challenge = ChallengeModel(name=name, units=units, challenge_id=challenge_id)
+    challenge = ChallengeModel(name=name, units=units, challenge_id=challenge_id, published=True)
 
     ChallengeRepository.add(challenge)
 
@@ -209,7 +211,8 @@ def test_delete_unit(init):
             unit_1,
             unit_2
         ],
-        id="D1"
+        id="D1",
+        published=False
     )
 
     ChallengeController.create(challenge_mock)
@@ -257,7 +260,8 @@ def test_delete_lesson(init):
         units=[
             unit_1
         ],
-        id="D1"
+        id="D1",
+        published=True
     )
 
     ChallengeController.create(challenge_mock)
