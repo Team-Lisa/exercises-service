@@ -16,7 +16,7 @@ class ChallengeRepository:
         if published is None:
             return Challenge.objects()
         else:
-            return Challenge.objects(published=published)
+            return Challenge.objects(published=published == 'true')
 
     @staticmethod
     def add_unit(challenge_id, unit):
