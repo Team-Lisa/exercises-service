@@ -4,11 +4,11 @@ from api.repositories.exercise_repository import ExerciseRepository
 
 
 def test_response_create(init):
-    exercise_type = "listing"
+    exercise_type = "Complete"
     question = "mock_question"
-    options = ["option_a", "option_b", "option_c"]
+    options = ["option_a", "option_b", "option_c", "option_d"]
     correct_answer = "option_b"
-    lesson_id = "l1"
+    lesson_id = "C1U1L1"
     exercise_id = ExerciseRepository.get_next_id(lesson_id)
     exercise = Exercise(exercise_type=exercise_type, question=question, options=options,
                         correct_answer=correct_answer, exercise_id=exercise_id, lesson_id=lesson_id)
@@ -33,11 +33,11 @@ def test_find_empty(init):
 
 
 def test_find(init):
-    exercise_type = "listing"
+    exercise_type = "Complete"
     question = "mock_question"
-    options = ["option_a", "option_b", "option_c"]
+    options = ["option_a", "option_b", "option_c", "option_d"]
     correct_answer = "option_b"
-    lesson_id = "l1"
+    lesson_id = "C1U1L1"
     exercise_id = ExerciseRepository.get_next_id(lesson_id)
     exercise = Exercise(exercise_type=exercise_type, question=question, options=options,
                         correct_answer=correct_answer, exercise_id=exercise_id, lesson_id=lesson_id)
@@ -62,11 +62,11 @@ def test_find(init):
 
 
 def test_delete(init):
-    exercise_type = "listing"
+    exercise_type = "Complete"
     question = "mock_question"
-    options = ["option_a", "option_b", "option_c"]
+    options = ["option_a", "option_b", "option_c","option_d"]
     correct_answer = "option_b"
-    lesson_id = "l1"
+    lesson_id = "C1U1L1"
     exercise_id = ExerciseRepository.get_next_id(lesson_id)
     exercise = Exercise(exercise_type=exercise_type, question=question, options=options,
                         correct_answer=correct_answer, exercise_id=exercise_id, lesson_id=lesson_id)
@@ -86,11 +86,11 @@ def test_delete(init):
 
 
 def test_find_lesson(init):
-    exercise_type = "listing"
+    exercise_type = "Complete"
     question = "mock_question"
-    options = ["option_a", "option_b", "option_c"]
+    options = ["option_a", "option_b", "option_c", "option_d"]
     correct_answer = "option_b"
-    lesson_id = "l1"
+    lesson_id = "C1U1L1"
     exercise_id = ExerciseRepository.get_next_id(lesson_id)
     exercise = Exercise(exercise_type=exercise_type, question=question, options=options,
                         correct_answer=correct_answer, exercise_id=exercise_id, lesson_id=lesson_id)
@@ -106,11 +106,11 @@ def test_find_lesson(init):
 
 
 def test_find_exam(init):
-    exercise_type = "listing"
+    exercise_type = "Complete"
     question = "mock_question"
-    options = ["option_a", "option_b", "option_c"]
+    options = ["option_a", "option_b", "option_c", "option_d"]
     correct_answer = "option_b"
-    lesson_id = "l1"
+    lesson_id = "C1U1L1"
     exercise_id = ExerciseRepository.get_next_id(lesson_id)
     exercise = Exercise(exercise_type=exercise_type, question=question, options=options,
                         correct_answer=correct_answer, exercise_id=exercise_id, lesson_id=lesson_id)
@@ -125,12 +125,12 @@ def test_find_exam(init):
     assert len(exercises) == ExerciseController.EXAM_EXERCISES_AMOUNT
 
 def test_edit_exercise(init):
-    exercise_type = "listing"
+    exercise_type = "Complete"
     question = "mock_question"
-    options = ["option_a", "option_b", "option_c"]
+    options = ["option_a", "option_b", "option_c", "option_d"]
     correct_answer = "option_b"
-    exercise_id = ExerciseRepository.get_new_id()
-    lesson_id = "l1"
+    exercise_id = ExerciseRepository.get_next_id("C1U1L1")
+    lesson_id = "C1U1L1"
     exercise = Exercise(exercise_type=exercise_type, question=question, options=options,
                         correct_answer=correct_answer, exercise_id=exercise_id, lesson_id=lesson_id)
 
@@ -146,13 +146,13 @@ def test_edit_exercise(init):
         }
     }
 
-    new_exercise = Exercise(exercise_type="pruebita", question="question edit", options=options,
+    new_exercise = Exercise(exercise_type=exercise_type, question="question edit", options=options,
                         correct_answer=correct_answer, exercise_id=exercise_id, lesson_id=lesson_id)
 
     response = ExerciseController.edit_exercise(exercise_id, new_exercise)
     assert response == {
         "exercise": {
-            "exercise_type": "pruebita",
+            "exercise_type": exercise_type,
             "question": "question edit",
             "options": options,
             "correct_answer": correct_answer,
@@ -162,12 +162,12 @@ def test_edit_exercise(init):
     }
 
 def test_edit_exercise_without_id(init):
-    exercise_type = "listing"
+    exercise_type = "Complete"
     question = "mock_question"
-    options = ["option_a", "option_b", "option_c"]
+    options = ["option_a", "option_b", "option_c", "option_d"]
     correct_answer = "option_b"
-    exercise_id = ExerciseRepository.get_new_id()
-    lesson_id = "l1"
+    exercise_id = ExerciseRepository.get_next_id("C1U1L1")
+    lesson_id = "C1U1L1"
     exercise = Exercise(exercise_type=exercise_type, question=question, options=options,
                         correct_answer=correct_answer, exercise_id=exercise_id, lesson_id=lesson_id)
 
@@ -183,7 +183,7 @@ def test_edit_exercise_without_id(init):
         }
     }
 
-    new_exercise = Exercise(exercise_type="pruebita", question="question edit", options=options,
+    new_exercise = Exercise(exercise_type=exercise_type, question="question edit", options=options,
                         correct_answer=correct_answer, exercise_id=exercise_id, lesson_id=lesson_id)
 
     response = ExerciseController.edit_exercise(None, new_exercise)
@@ -192,9 +192,9 @@ def test_edit_exercise_without_id(init):
     }
 
 def test_get_next_exercise_id(init):
-    exercise_type = "listing"
+    exercise_type = "Complete"
     question = "mock_question"
-    options = ["option_a", "option_b", "option_c"]
+    options = ["option_a", "option_b", "option_c", "option_d"]
     correct_answer = "option_b"
     lesson_id = "C1U1L1"
     exercise_id = "C1U1L1E1"
