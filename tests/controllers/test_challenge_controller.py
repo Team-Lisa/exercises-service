@@ -475,7 +475,7 @@ def test_filter_by_published(init):
     )
 
     challenge_mock_2 = Challenge(
-        name="mock_name",
+        name="mock_name2",
         units=[
             unit_1
         ],
@@ -484,7 +484,7 @@ def test_filter_by_published(init):
     )
 
     challenge_mock_3 = Challenge(
-        name="mock_name",
+        name="mock_name3",
         units=[
             unit_1
         ],
