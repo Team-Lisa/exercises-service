@@ -19,11 +19,14 @@ class ChallengeRepository:
             return Challenge.objects(published=published == 'true')
 
     @staticmethod
-    def add_unit(challenge_id, unit):
+    def add_unit(challenge_id, new_unit):
         result = ChallengeRepository.get_by_id(challenge_id)
         challenge = result.get()
         units = challenge.units
-        units.append(unit)
+        for unit in units:
+            if unit["name"] == new_unit["name"]:
+                return "Nombre de la unidad ya utilizado"
+        units.append(new_unit)
         result.update(set__units=units)
 
     @staticmethod
@@ -44,6 +47,29 @@ class ChallengeRepository:
         if result.count() < 1:
             pass
         return result
+
+    @staticmethod
+    def get_challenge_by_name(challenge_name):
+        result = Challenge.objects(name=challenge_name)
+        if result.count() < 1:
+            pass
+        return result
+
+
+    @staticmethod
+    def edit_challenge(challenge_id, new_challenge):
+        challenge = Challenge.objects(challenge_id=challenge_id)
+        if len(challenge) == 0:
+            return
+        else:
+
+            challenge = challenge.get()
+            new_units = list(map(lambda unit: unit.dict(), new_challenge.units))
+            challenge.units = new_units
+            challenge.name = new_challenge.name
+            challenge.published = new_challenge.published
+            challenge.save()
+            return challenge
 
     @staticmethod
     def delete(challenge_id):
