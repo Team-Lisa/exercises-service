@@ -29,6 +29,10 @@ async def find(lesson_id:str):
 async def find(exam_id: str):
     return ExerciseController.find_exam(exam_id)
 
+@router.post("/exercises/{exercise_id}", status_code=201)
+async def edit_exercise(exercise_id: str, exercise: Exercise):
+    return ExerciseController.edit_exercise(exercise_id, exercise)
+
 @router.delete("/exercises/{exercise_id}")
 async def delete(exercise_id: Optional[str] = None):
     return ExerciseController.delete(exercise_id)

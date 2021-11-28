@@ -13,6 +13,10 @@ router = APIRouter(tags=["Challenge"])
 async def create(challenge: Challenge):
     return ChallengeController.create(challenge)
 
+@router.post("/challenges/{challenge_id}", status_code=201)
+async def edit_challenge(challenge_id: str, challenge: Challenge):
+    return ChallengeController.edit_challenge(challenge_id, challenge)
+
 
 @router.get("/challenges", response_model=ChallengesResponse)
 async def find(published: str = None):

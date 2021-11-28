@@ -284,7 +284,162 @@ def test_delete_lesson(init):
 
     assert len(unit.get("lessons")) == 1
 
-    
+def test_edit_challenge(init):
+    lesson_1 = Lesson(
+        name="lesson_1",
+        id="C1U1L1"
+    )
+    lesson_2 = Lesson(
+        name="lesson_2",
+        id="C1U1L2"
+    )
+
+    lesson_3 = Lesson(
+        name="lesson_1",
+        id="C1U2L1"
+    )
+    lesson_4 = Lesson(
+        name="lesson_2",
+        id="C1U2L2"
+    )
+
+    exam_1 = Exam(
+        id="1",
+        duration=3600
+    )
+
+    unit_1 = Unit(
+        name="mock_unit_1",
+        exam=exam_1,
+        id="U1",
+        lessons=[
+            lesson_1,
+            lesson_2
+        ]
+    )
+
+    exam_2 = Exam(
+        id="2",
+        duration=3600
+    )
+
+    unit_2 = Unit(
+        name="mock_unit_2",
+        exam=exam_2,
+        id="U2",
+        lessons=[
+            lesson_3,
+            lesson_4
+        ]
+    )
+
+    challenge_mock = Challenge(
+        name="mock_name",
+        units=[
+            unit_1,
+            unit_2
+        ],
+        published=True,
+        id="D1"
+    )
+
+    result = ChallengeController.create(challenge_mock)
+
+    assert "challenge" in result
+    assert result.get("challenge") == {
+        'name': 'mock_name',
+        'challenge_id': 'D1',
+        'published': True,
+        'units': [
+            {'name': 'mock_unit_1',
+             'id': 'U1',
+             'exam': {
+                 "id": "1",
+                 "duration": 3600
+             },
+             'lessons': [
+                 {'name': 'lesson_1',
+                  'id': 'C1U1L1'},
+                 {'name': 'lesson_2',
+                  'id': 'C1U1L2'}
+             ]},
+            {'name': 'mock_unit_2',
+             'id': 'U2',
+             'exam': {
+                 "id": "2",
+                 "duration": 3600
+             },
+             'lessons': [
+                 {'name': 'lesson_1',
+                  'id': 'C1U2L1'},
+                 {'name': 'lesson_2',
+                  'id': 'C1U2L2'}
+             ]
+             }
+        ]
+    }
+
+    challenge_mock_updated = Challenge(
+        name="mock_name2",
+        units=[unit_2],
+        published=False,
+        id="D1"
+    )
+
+    result = ChallengeController.edit_challenge("D1", challenge_mock_updated)
+    assert "challenge" in result
+    assert result.get("challenge") == {
+        'name': 'mock_name2',
+        'challenge_id': 'D1',
+        'published': False,
+        'units': [
+            {'name': 'mock_unit_2',
+             'id': 'U2',
+             'exam': {
+                 "id": "2",
+                 "duration": 3600
+             },
+             'lessons': [
+                 {'name': 'lesson_1',
+                  'id': 'C1U2L1'},
+                 {'name': 'lesson_2',
+                  'id': 'C1U2L2'}
+             ]
+             }
+        ]
+    }
+
+def test_get_next_challenge_id(init):
+    name = "mock_name"
+    name_lesson_1 = "mock_name_lesson_1"
+    exam_1 = {
+                 "id": "C1U1E",
+                 "duration": 3600
+             }
+    lessons_1 = [
+        {"name": "lesson_1",
+         "id": "C1U1L1"},
+        {"name": "lesson_2",
+         "id": "C1U1L2"}
+    ]
+
+    units = [
+        {"name": name_lesson_1,
+         "id": "C1U1",
+         "exam": exam_1,
+         "lessons": lessons_1},
+
+    ]
+
+    challenge_id = "C1"
+    challenge = ChallengeModel(name=name, units=units, challenge_id=challenge_id, published=True)
+
+    ChallengeRepository.add(challenge)
+
+    result = ChallengeController.get_next_challenge_id()
+
+    assert result == {"challenges_next_id": "C2"}
+
 def test_filter_by_published(init):
     lesson_1 = Lesson(
         name="lesson_1",
@@ -320,7 +475,7 @@ def test_filter_by_published(init):
     )
 
     challenge_mock_2 = Challenge(
-        name="mock_name",
+        name="mock_name2",
         units=[
             unit_1
         ],
@@ -329,7 +484,7 @@ def test_filter_by_published(init):
     )
 
     challenge_mock_3 = Challenge(
-        name="mock_name",
+        name="mock_name3",
         units=[
             unit_1
         ],
@@ -352,35 +507,4 @@ def test_filter_by_published(init):
     published = ChallengeRepository.get_all()
 
     assert len(published) == 3
-
-def test_get_next_challenge_id(init):
-    name = "mock_name"
-    name_lesson_1 = "mock_name_lesson_1"
-    exam_1 = {
-                 "id": "C1U1E",
-                 "duration": 3600
-             }
-    lessons_1 = [
-        {"name": "lesson_1",
-         "id": "C1U1L1"},
-        {"name": "lesson_2",
-         "id": "C1U1L2"}
-    ]
-
-    units = [
-        {"name": name_lesson_1,
-         "id": "C1U1",
-         "exam": exam_1,
-         "lessons": lessons_1},
-
-    ]
-
-    challenge_id = "C1"
-    challenge = ChallengeModel(name=name, units=units, challenge_id=challenge_id, published=True)
-
-    ChallengeRepository.add(challenge)
-
-    result = ChallengeController.get_next_challenge_id()
-
-    assert result == {"challenges_next_id": "C2"}
 

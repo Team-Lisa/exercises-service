@@ -86,3 +86,26 @@ def test_get_next_exercise_id(init):
     ExerciseRepository.add(exercise)
 
     assert ExerciseRepository.get_next_id(lesson_id) == "C1U1L1E2"
+
+def test_edit_exercise(init):
+    exercise_type = "listening"
+    question = "mock_question"
+    options = ["option_a", "option_b", "option_c"]
+    correct_answer = "option_b"
+    exercise_id = "C1U1L1E1"
+    lesson_id = "C1U1L1"
+    exercise = Exercise(exercise_type=exercise_type, question=question,
+                        options=options, correct_answer=correct_answer,
+                        exercise_id=exercise_id, lesson_id=lesson_id)
+    ExerciseRepository.add(exercise)
+
+    new_exercise = Exercise(exercise_type="pruebita", question="question edit", options=options,
+                            correct_answer=correct_answer, exercise_id=exercise_id, lesson_id=lesson_id)
+
+    response = ExerciseRepository.edit_exercise(exercise_id, new_exercise)
+    assert response.exercise_type == "pruebita"
+    assert response.question == "question edit"
+    assert response.options == options
+    assert response.correct_answer == correct_answer
+    assert response.exercise_id == exercise_id
+    assert response.lesson_id == lesson_id
