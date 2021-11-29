@@ -15,7 +15,7 @@ class ChallengesValidator:
 
     @staticmethod
     def validate_name(challenge, errors):
-        if len(ChallengeRepository.get_challenge_by_name(challenge.name)) > 0:
+        if len(ChallengeRepository.get_challenge_by_name(challenge.name)) > 1:
             errors.append("Nombre del desafío no disponible")
 
     @staticmethod
