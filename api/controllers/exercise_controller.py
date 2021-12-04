@@ -1,3 +1,5 @@
+from fastapi import HTTPException
+
 from api.repositories.exercise_repository import ExerciseRepository
 from api.models.exercise import Exercise
 from api.services.exercises_validator import ExercisesValidator
@@ -17,7 +19,7 @@ class ExerciseController:
             result = ExerciseRepository.add(exercise_to_save)
             return {"exercise": result.to_json()}
         else:
-            return {"errors": errors}
+            raise HTTPException(status_code=400, detail={"errors": errors})
 
     @staticmethod
     def find(lesson_id=None):
@@ -53,7 +55,7 @@ class ExerciseController:
                 return {"exercise": {}}
             return {"exercise": exercise_updated.to_json()}
         else:
-            return {"errors": errors}
+            raise HTTPException(status_code=400, detail={"errors": errors})
 
     @staticmethod
     def delete(exercise_id=None):

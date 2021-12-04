@@ -1,3 +1,5 @@
+from fastapi import HTTPException
+
 from api.repositories.challenge_repository import ChallengeRepository
 from api.models.challenge import Challenge
 from api.services.challenges_validator import ChallengesValidator
@@ -14,7 +16,7 @@ class ChallengeController:
             result = ChallengeRepository.add(challenge_to_save)
             return {"challenge": result.to_json()}
         else:
-            return {"errors": errors}
+            raise HTTPException(status_code=400, detail={"errors": errors})
 
     @staticmethod
     def find(published):
@@ -46,7 +48,7 @@ class ChallengeController:
                 return {"challenge": {}}
             return {"challenge": challenge_updated.to_json()}
         else:
-            return {"errors": errors}
+            raise HTTPException(status_code=400, detail={"errors": errors})
 
     @staticmethod
     def delete_challenge(challenge_id=None):

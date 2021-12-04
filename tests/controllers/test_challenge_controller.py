@@ -1,7 +1,10 @@
 from api.controllers.challenge_controller import ChallengeController
+from api.controllers.exercise_controller import ExerciseController
+from api.models.exercise import Exercise
 from api.models.requests.challenge import Challenge, Unit, Lesson, Exam
 from api.repositories.challenge_repository import ChallengeRepository
 from api.models.challenge import Challenge as ChallengeModel
+from tests.models.test_models import TestModels
 
 
 def test_response_create(init):
@@ -261,7 +264,7 @@ def test_delete_lesson(init):
             unit_1
         ],
         id="D1",
-        published=True
+        published=False
     )
 
     ChallengeController.create(challenge_mock)
@@ -339,7 +342,7 @@ def test_edit_challenge(init):
             unit_1,
             unit_2
         ],
-        published=True,
+        published=False,
         id="D1"
     )
 
@@ -349,7 +352,7 @@ def test_edit_challenge(init):
     assert result.get("challenge") == {
         'name': 'mock_name',
         'challenge_id': 'D1',
-        'published': True,
+        'published': False,
         'units': [
             {'name': 'mock_unit_1',
              'id': 'U1',
@@ -441,27 +444,36 @@ def test_get_next_challenge_id(init):
     assert result == {"challenges_next_id": "C2"}
 
 def test_filter_by_published(init):
+    eight_exercises = TestModels.get_eight_exercises("C1U1L1")
+    for exercise in eight_exercises:
+        exercise = Exercise(exercise_type=exercise.exercise_type, question=exercise.question, options=exercise.options,
+                            correct_answer=exercise.correct_answer, lesson_id=exercise.lesson_id)
+
+        ExerciseController.create(exercise)
+
+    sixteen_exercises = TestModels.get_sixteen_exercises("C1U1X")
+    for exercise in sixteen_exercises:
+        exercise = Exercise(exercise_type=exercise.exercise_type, question=exercise.question, options=exercise.options,
+                            correct_answer=exercise.correct_answer, lesson_id=exercise.lesson_id)
+
+        ExerciseController.create(exercise)
+
     lesson_1 = Lesson(
         name="lesson_1",
         id="C1U1L1"
     )
-    lesson_2 = Lesson(
-        name="lesson_2",
-        id="C1U1L2"
-    )
 
     exam = Exam(
-        id="1",
+        id="C1U1X",
         duration=3600
     )
 
     unit_1 = Unit(
         name="mock_unit_1",
         exam=exam,
-        id="U1",
+        id="C1U1",
         lessons=[
-            lesson_1,
-            lesson_2
+            lesson_1
         ]
     )
 
@@ -470,7 +482,7 @@ def test_filter_by_published(init):
         units=[
             unit_1
         ],
-        id="D1",
+        id="C1",
         published=True
     )
 
@@ -479,7 +491,7 @@ def test_filter_by_published(init):
         units=[
             unit_1
         ],
-        id="D2",
+        id="C2",
         published=False
     )
 
@@ -488,7 +500,7 @@ def test_filter_by_published(init):
         units=[
             unit_1
         ],
-        id="D3",
+        id="C3",
         published=False
     )
 
