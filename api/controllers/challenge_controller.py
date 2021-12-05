@@ -79,3 +79,8 @@ class ChallengeController:
         #   - "C1U1XE1" is for Challenge 1, Unit 1, Exam, Exercise 1
         result = ChallengeRepository.get_next_id()
         return {"challenges_next_id": result}
+
+    @staticmethod
+    def get_challenge_by_challenge_id(challenge_id):
+        result = ChallengeRepository.get_by_id(challenge_id)
+        return {"challenge": result[0].to_json()}
