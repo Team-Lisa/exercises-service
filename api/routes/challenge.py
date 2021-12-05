@@ -50,6 +50,9 @@ async def delete_unit(challenge_id: str, unit_id: str):
 async def delete_lesson(challenge_id: str, unit_id: str, lesson_id: str):
     return ChallengeController.delete_lesson(challenge_id, unit_id, lesson_id)
 
-@router.get("/challenges/{challenge_id}", response_model=ChallengeResponse)
+
+@router.get("/challenges/{challenge_id}")
 async def get_challenge_by_challenge_id(challenge_id: str):
     return ChallengeController.get_challenge_by_challenge_id(challenge_id)
+
+

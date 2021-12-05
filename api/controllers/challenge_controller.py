@@ -83,4 +83,6 @@ class ChallengeController:
     @staticmethod
     def get_challenge_by_challenge_id(challenge_id):
         result = ChallengeRepository.get_by_id(challenge_id)
+        if len(result) == 0:
+            return {"challenge": {}}
         return {"challenge": result[0].to_json()}
