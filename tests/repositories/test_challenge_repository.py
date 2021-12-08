@@ -269,16 +269,22 @@ def test_get_next_challenge_id(init):
          "lessons": lessons_1},
 
     ]
-    challenge_id = "C1"
+    challenge_id = "C9"
     challenge = Challenge(name=name, units=units, challenge_id=challenge_id)
 
     ChallengeRepository.add(challenge)
 
+    challenge_id = "C10"
+    challenge = Challenge(name=name, units=units, challenge_id=challenge_id)
+
+    ChallengeRepository.add(challenge)
+
+
     result = ChallengeRepository.get_all()
-    assert result.count() == 1
+    assert result.count() == 2
 
     result = ChallengeRepository.get_next_id()
-    assert result == "C2"
+    assert result == "C11"
 
 def test_edit_challenge(init):
     name = "mock_name"
